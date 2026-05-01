@@ -1,0 +1,60 @@
+{% extends 'header.html' %}
+
+{% block body %}
+<div class="container3">
+    <nav class="navbar">
+        <a href="/" class="brand-logo">Cooked</a>
+        <div class="navbar-items">
+            <a href="/" class="navs">Home</a>
+            <a href="/find" class="navs">Find a Recipe</a>
+            {% if session.get('user_id') %}
+            <a href="/dashboard" class="navs">Dashboard</a>
+            <a href="/upload" class="navs">Upload</a>
+            <a href="/logout" class="navs">Logout</a>
+            {% else %}
+            <a href="/login" class="navs">Login</a>
+            {% endif %}
+        </div>
+        <div class="navbar-button"></div>
+    </nav>
+
+    <section class="recipe-detailed-card">
+        <div class="recipe-summary">
+            <div>
+                <span class="eyebrow">Community Upload</span>
+                <h1>{{ recipe.title }}</h1>
+            </div>
+            <div class="recipe-meta">
+                <div class="meta-item">👤 By {{ author }}</div>
+                <div class="meta-item">📅 {{ recipe.created_at.strftime('%Y-%m-%d') if recipe.created_at else 'Unknown' }}</div>
+            </div>
+        </div>
+
+        {% if recipe.image_filename %}
+        <img src="{{ url_for('static', filename='uploads/' ~ recipe.image_filename) }}" alt="{{ recipe.title }}">
+        {% else %}
+        <div style="width: 100%; height: 350px; background: #1e293b; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 1.5rem; border-radius: 20px;">No Image Provided</div>
+        {% endif %}
+
+        <div class="recipe-body">
+            <div class="recipe-block">
+                <h2>Ingredients</h2>
+                <ul>
+                    {% for ingredient in recipe.ingredients.split('\n') %}
+                        {% if ingredient.strip() %}
+                            <li>{{ ingredient }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="recipe-block">
+                <h2>Instructions</h2>
+                <p>{{ recipe.instructions | replace('\n', '<br>') | safe }}</p>
+            </div>
+        </div>
+
+        <a href="/find" class="recipe-action" id="back-to-search">← Back to Recipe Search</a>
+    </section>
+</div>
+{% endblock body %}

@@ -1,0 +1,104 @@
+{% extends 'header.html' %}
+
+{% block body %}
+<div class="container2">
+    <nav class="navbar">
+        <a href="/" class="brand-logo">Cooked</a>
+        <div class="navbar-items">
+            <a href="/" class="navs">Home</a>
+            <a href="/find" class="navs">Find a Recipe</a>
+            {% if session.get('user_id') %}
+            <a href="/dashboard" class="navs" style="color: #38bdf8; font-weight: 700;">Dashboard</a>
+            <a href="/upload" class="navs">Upload</a>
+            <a href="/logout" class="navs">Logout</a>
+            {% else %}
+            <a href="/login" class="navs">Login</a>
+            {% endif %}
+        </div>
+        <div class="navbar-button"></div>
+    </nav>
+
+    <div class="hero-section-find" style="max-width: 1200px;">
+        <h1 class="results-heading" style="margin-bottom: 20px;">Welcome, {{ session.get('username') }}</h1>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
+            
+            <!-- Favorites Section -->
+            <section class="search-panel" style="padding: 32px;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: #f1f5f9;">Your Saved Favorites</h2>
+                
+                {% if favorites %}
+                <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px;">
+                    {% for fav in favorites %}
+                    <li style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); padding: 16px; border-radius: 12px; display: flex; align-items: center; gap: 16px;">
+                        {% if fav.recipe_image %}
+                        <img src="{{ fav.recipe_image }}" alt="" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
+                        {% endif %}
+                        <div style="flex: 1;">
+                            <a href="/recipe/{{ fav.api_recipe_id }}" style="color: #38bdf8; font-weight: 600; font-size: 1.05rem;">{{ fav.recipe_title }}</a>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="empty-state">No favorite recipes saved yet. Browse recipes and save them here!</p>
+                {% endif %}
+            </section>
+
+            <!-- Uploaded Recipes Section -->
+            <section class="search-panel" style="padding: 32px;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: #f1f5f9;">Your Uploaded Recipes</h2>
+                
+                {% if user_recipes %}
+                <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px;">
+                    {% for rec in user_recipes %}
+                    <li style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); padding: 16px; border-radius: 12px; display: flex; align-items: center; gap: 16px;">
+                        {% if rec.image_filename %}
+                        <img src="{{ url_for('static', filename='uploads/' ~ rec.image_filename) }}" alt="" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
+                        {% endif %}
+                        <div style="flex: 1;">
+                            <a href="#" style="color: #f1f5f9; font-weight: 600; font-size: 1.05rem;">{{ rec.title }}</a>
+                            <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 4px;">{{ rec.created_at }}</p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="empty-state">You haven't uploaded any personal recipes yet. <br><br><a href="/upload" style="color: #38bdf8; font-weight: bold;">Upload your first recipe →</a></p>
+                {% endif %}
+            </section>
+
+            <!-- Meal History / Notes -->
+            <section class="search-panel" style="padding: 32px; grid-column: 1 / -1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="font-size: 1.8rem; color: #f1f5f9;">Meal History & Notes</h2>
+                </div>
+                
+                <!-- Add Note Form -->
+                <form action="/add_note" method="POST" style="display: flex; gap: 12px; margin-bottom: 24px; align-items: flex-start;">
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+                        <input type="text" name="title" class="input-box" placeholder="Meal Title" style="border-radius: 8px; border-right: 1px solid rgba(56, 189, 248, 0.2); width: 100%; height: 44px; font-size: 0.9rem;" required>
+                        <textarea name="notes" class="input-box" placeholder="Add personal notes, tweaks, or review..." style="border-radius: 8px; border-right: 1px solid rgba(56, 189, 248, 0.2); width: 100%; height: 80px; padding-top: 12px; font-size: 0.9rem; resize: vertical;" required></textarea>
+                    </div>
+                    <input type="submit" value="Save Note" class="submit-button" style="border-radius: 8px; height: 44px; min-width: 120px;">
+                </form>
+
+                {% if notes %}
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px;">
+                    {% for note in notes %}
+                    <div style="background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 12px; padding: 20px;">
+                        <h3 style="color: #f1f5f9; font-size: 1.1rem; margin-bottom: 8px;">{{ note.title }}</h3>
+                        <p style="color: #94a3b8; font-size: 0.9rem; line-height: 1.6;">{{ note.notes }}</p>
+                        <span style="display: block; margin-top: 12px; font-size: 0.75rem; color: #64748b;">{{ note.created_at }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="empty-state">No notes added. Keep track of modifications or ratings here.</p>
+                {% endif %}
+            </section>
+            
+        </div>
+    </div>
+</div>
+{% endblock body %}

@@ -6,8 +6,14 @@
         <a href="/" class="brand-logo">Cooked</a>
         <div class="navbar-items">
             <a href="/" class="navs">Home</a>
-            <a href="/find" class="navs">Find a recipe</a>
-            <a href="/" class="navs">Contact</a>
+            <a href="/find" class="navs">Find a Recipe</a>
+            {% if session.get('user_id') %}
+            <a href="/dashboard" class="navs">Dashboard</a>
+            <a href="/upload" class="navs">Upload</a>
+            <a href="/logout" class="navs">Logout</a>
+            {% else %}
+            <a href="/login" class="navs">Login</a>
+            {% endif %}
         </div>
         <div class="navbar-button"></div>
     </nav>
@@ -15,12 +21,24 @@
     <section class="recipe-detailed-card">
         <div class="recipe-summary">
             <div>
-                <span class="eyebrow">Recipe details</span>
+                <span class="eyebrow">Recipe Details</span>
                 <h1>{{ recipe.title }}</h1>
             </div>
             <div class="recipe-meta">
                 <div class="meta-item">⏱️ {{ recipe.readyInMinutes }} min</div>
                 <div class="meta-item">🍽️ {{ recipe.servings }} servings</div>
+                {% if session.get('user_id') %}
+                    {% if is_favorite %}
+                        <div class="meta-item" style="color: #34d399; border-color: rgba(52, 211, 153, 0.4);">⭐ Saved to Favorites</div>
+                    {% else %}
+                        <form action="/save_favorite" method="POST" style="margin: 0;">
+                            <input type="hidden" name="api_recipe_id" value="{{ recipe.id }}">
+                            <input type="hidden" name="recipe_title" value="{{ recipe.title }}">
+                            <input type="hidden" name="recipe_image" value="{{ recipe.image }}">
+                            <button type="submit" class="meta-item" style="cursor: pointer; display: inline-block;">⭐ Save Favorite</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
 
@@ -42,7 +60,7 @@
             </div>
         </div>
 
-        <a href="/find" class="recipe-action">Back to Recipe Search</a>
+        <a href="/find" class="recipe-action" id="back-to-search">← Back to Recipe Search</a>
     </section>
 </div>
 {% endblock body %}

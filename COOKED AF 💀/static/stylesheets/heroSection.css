@@ -1,1 +1,6 @@
-<same as above>
+/* Hero section global background override */
+body,
+.container,
+.black-curtain {
+    background-color: #121212;
+}
