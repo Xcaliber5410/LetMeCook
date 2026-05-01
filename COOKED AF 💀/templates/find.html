@@ -1,0 +1,54 @@
+{% extends 'header.html' %}
+
+{% block body %}
+
+<div class="container2">
+    <nav class="navbar">
+        <a href="/" class="brand-logo">Cooked</a>
+        <div class="navbar-items">
+            <a href="/" class="navs">Home</a>
+            <a href="/find" class="navs">Find a recipe</a>
+            <a href="/" class="navs">Contact</a>
+        </div>
+        <div class="navbar-button"></div>
+    </nav>
+
+    <div class="hero-section-find">
+        <section class="search-panel">
+            <h1>Search recipes by ingredients</h1>
+            <p>Type the ingredients you have and find recipes that match. It’s fast, intuitive, and built for busy kitchens.</p>
+            <form action="/find" method="POST">
+                <input type="text" id="ingredients" name="ingredients" class="input-box" placeholder="Enter ingredients like chicken, basil, tomato..." autocomplete="off" required>
+                <input type="submit" value="Find Recipe" class="submit-button">
+            </form>
+        </section>
+
+        <div class="recipe-results">
+            <h2 class="results-heading">Recipe Results</h2>
+
+            {% if error_message %}
+            <p class="empty-state">{{ error_message }}</p>
+            {% endif %}
+
+            {% if recipes %}
+            <div class="recipe-container">
+                {% for recipe in recipes %}
+                {% if recipe.image %}
+                <article class="recipe-card">
+                    <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+                    <div class="recipe-detail">
+                        <h2>{{ recipe.title }}</h2>
+                        <a href="{{ url_for('recipe', recipe_id=recipe.id) }}">View Recipe</a>
+                    </div>
+                </article>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-state">No recipes found for the given ingredients. Please try again with different ingredients.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

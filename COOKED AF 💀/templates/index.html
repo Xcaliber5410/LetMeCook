@@ -1,0 +1,59 @@
+{% extends "header.html" %}
+
+{% block body %}
+<div class="container">
+    <div class="black-curtain">
+        <nav class="navbar">
+            <a href="/" class="brand-logo">Cooked</a>
+            <div class="navbar-items">
+                <a href="/" class="navs">Home</a>
+                <a href="/find" class="navs">Find a recipe</a>
+                <a href="/" class="navs">Contact</a>
+            </div>
+            <div class="navbar-button"></div>
+        </nav>
+
+        <main class="hero-section">
+            <div class="hero-copy">
+                <span class="eyebrow">Cooked</span>
+                <h1>Make every meal feel effortless and inspired.</h1>
+                <p>Find recipes tailored to the ingredients you already have, with step-by-step directions, smart suggestions, and meal ideas designed for real kitchens.</p>
+                <div class="hero-actions">
+                    <a href="/find" class="button button-primary">Find Recipes</a>
+                    <a href="/find" class="button button-secondary">Explore Ideas</a>
+                </div>
+            </div>
+
+            <div class="hero-highlights">
+                <div class="hero-stat-card">
+                    <strong>1500+</strong>
+                    <p>Recipes curated for everyday cooking.</p>
+                </div>
+                <div class="hero-stat-card">
+                    <strong>Fast search</strong>
+                    <p>Discover menu options with just a few ingredients.</p>
+                </div>
+                <div class="hero-stat-card">
+                    <strong>Simple steps</strong>
+                    <p>Clear guidance so you can cook without the guesswork.</p>
+                </div>
+            </div>
+        </main>
+
+        <section class="feature-grid">
+            <article class="feature-card">
+                <h3>Ingredient-first search</h3>
+                <p>Enter what you already have in the fridge and get recipes that match, not recipes that make you shop.</p>
+            </article>
+            <article class="feature-card">
+                <h3>Clean, modern interface</h3>
+                <p>Designed for busy cooks, with clear typography, simplified navigation, and fast access to results.</p>
+            </article>
+            <article class="feature-card">
+                <h3>Smart recipe recommendations</h3>
+                <p>Browse curated recipe ideas for quick dinners, family meals, and special treats.</p>
+            </article>
+        </section>
+    </div>
+</div>
+{% endblock body %}

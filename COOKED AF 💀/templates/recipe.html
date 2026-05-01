@@ -1,0 +1,48 @@
+{% extends 'header.html' %}
+
+{% block body %}
+<div class="container3">
+    <nav class="navbar">
+        <a href="/" class="brand-logo">Cooked</a>
+        <div class="navbar-items">
+            <a href="/" class="navs">Home</a>
+            <a href="/find" class="navs">Find a recipe</a>
+            <a href="/" class="navs">Contact</a>
+        </div>
+        <div class="navbar-button"></div>
+    </nav>
+
+    <section class="recipe-detailed-card">
+        <div class="recipe-summary">
+            <div>
+                <span class="eyebrow">Recipe details</span>
+                <h1>{{ recipe.title }}</h1>
+            </div>
+            <div class="recipe-meta">
+                <div class="meta-item">⏱️ {{ recipe.readyInMinutes }} min</div>
+                <div class="meta-item">🍽️ {{ recipe.servings }} servings</div>
+            </div>
+        </div>
+
+        <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+
+        <div class="recipe-body">
+            <div class="recipe-block">
+                <h2>Ingredients</h2>
+                <ul>
+                    {% for ingredient in recipe.extendedIngredients %}
+                    <li>{{ ingredient.amount }} {{ ingredient.unit }} {{ ingredient.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="recipe-block">
+                <h2>Instructions</h2>
+                <p>{{ recipe.instructions | safe }}</p>
+            </div>
+        </div>
+
+        <a href="/find" class="recipe-action">Back to Recipe Search</a>
+    </section>
+</div>
+{% endblock body %}
