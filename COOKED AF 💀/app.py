@@ -21,7 +21,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 API_KEY = Config.API_KEY
-db = DatabaseManager('localhost', 'root', 'Omkar#140706', 'cooked_db')
+db = DatabaseManager('localhost', 'root', 'password', 'cooked_db')
 
 @app.route('/')
 def home():
